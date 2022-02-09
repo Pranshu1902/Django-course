@@ -1,0 +1,106 @@
+<html>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
+    <body>
+        <!--Common Heading-->
+        <p class="text-4xl font-bold pt-6 pl-6">Task Manager</p>
+
+        <!--Welcome and logout option-->
+        <div class="flex pt-6 pl-6 pb-24">
+            <p class="text-3xl pr-12">Hi {{tasks.0.user}}</p>
+            <a href="/user/logout"><p class="font-semibold text-xl text-red-600 px-10 py-2 hover:text-red-800">Log Out</p></a>
+        </div>
+
+        <div class="text-center">
+            <!--Type of task view panel-->
+            <form method="post" action="" class="pl-6 pr-6 text-center font-bold text-3xl">
+                {% csrf_token %}
+                <button id="all" value="all" type="submit" class="rounded-3xl px-10 py-2 text-black hover:bg-red-600">All</button>
+                <button id="pending" value="pending" type="submit" class="rounded-3xl px-10 py-2 bg-red-300 text-black hover:bg-red-600">Pending</button>
+                <button id="completed" value="completed" type="submit" class="rounded-3xl px-10 py-2 bg-red-300 text-black hover:bg-red-600">Completed</button>
+            </form>
+
+
+            
+
+
+            <!--Main Tasks-->
+            <div class="pl-96 pr-96">
+                <!--1st task starts-->
+                {% for task in tasks %}
+                <div class="flex items-center text-center"> <!--min h screen-->
+                    <div class="flex items-center justify-between h-24 bg-gray-100 rounded-lg px-20">
+                        <div class="flex flex-col px-20">
+                            <p id="task_title" class="text-2xl font-semibold">{{task.title}}</p>
+                            <span id="task_date" class="text-sm text-gray-400">{{task.created_date | date:"l F d" }}</span>
+                        </div>
+                        <img src="C:/Users/DELL/Desktop/level6/task_manager/templates/update.png" alt="update" width="50" height="50">&nbsp;
+                        <img src="C:/Users/DELL/Desktop/level6/task_manager/templates/delete.png" alt="delete" width="50" height="50">
+                        <button><img src="C:/Users/DELL/Desktop/level6/task_manager/templates/delete.png" alt="del"></button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+
+
+
+
+
+
+            <!--Take 2-->
+
+            <ul id="list" style="list-style-type:none;" class="text-center">
+                <li>
+                    <div class="flex items-center text-center"> <!--min h screen-->
+                        <div class="flex items-center justify-between h-24 bg-gray-100 rounded-lg px-20">
+                            <div class="flex flex-col px-20">
+                                <p id="task_title" class="text-2xl font-semibold">{{task.title}}</p>
+                                <span id="task_date" class="text-sm text-gray-400">{{task.created_date}}</span>
+                            </div>
+                            <img src="C:/Users/DELL/Desktop/level6/task_manager/templates/update.png" alt="update" width="50" height="50">&nbsp;
+                            <img src="C:/Users/DELL/Desktop/level6/task_manager/templates/delete.png" alt="delete" width="50" height="50">
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+
+
+
+
+
+
+
+        </div>
+
+        <!--script src="type.js"></script-->
+        <script src="delete.js"></script>
+
+
+        <!-- <div class="pl-96 pr-96">
+                <div class="float-left bg-gray-100 rounded-lg px-10">
+                    <p class="text-black text-xl">{{task.title}}</p>
+                    <img src="update.png" alt="" width="30" height="30" class="flex">
+                    <img src="delete.png" alt="" width="30" height="30" class="flex">
+                    <p class="text-gray text-sm">{{task.date}}</p>
+                </div>
+            </div> -->
+            <h1>Tasks Default</h1>
+            {% for task in tasks %}
+            {{task.id}}. {{task.title}} - {{task.created_date}} 
+            <a href="delete-task/{{task.id}}/">delete task</a>&nbsp;
+            <a href="update-task/{{task.id}}/">update task</a>&nbsp;
+            <a href="detail-task/{{task.id}}/">details of task</a>&nbsp;
+            <br>
+            {% endfor %}
+            
+            
+            {% for page in paginator.page_range %}
+            <li>
+                <a href="?page={{page}}&search={{request.GET.search}}">{{page}}</a>
+            </li>
+            {% endfor %}
+            
+            
+    </body>
+</html>

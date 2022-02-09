@@ -1,0 +1,28 @@
+<html>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
+
+    <body>
+        <!--Common Heading-->
+        <p class="text-4xl font-bold pt-6 pl-6 pb-12">Task Manager</p>
+
+        <!--Main details of task-->
+        <div class="text-center font-bold text-4xl">
+            <p class="font-bold text-2xl text-red-500">Title: </p>
+            <p>{{task.title}}</p>
+            &nbsp;
+            <p class="font-bold text-2xl text-red-500">Description: </p>
+            <p>{{task.description}}</p>
+            &nbsp;
+            <p class="font-bold text-2xl text-red-500">Priority: </p>
+            <p>{{task.priority}}</p>
+            &nbsp;
+            <p class="font-bold text-2xl text-red-500">Completed: </p>
+            <p>{{task.completed}}</p>
+            <br>
+
+            &nbsp;
+            <a href="/home/all"><button class="text-white bg-red-500 hover:bg-red-800 rounded-lg px-10 py-2 text-xl">Home</button></a>
+        </div>
+        &nbsp;
+    </body>
+</html>

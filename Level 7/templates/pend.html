@@ -1,0 +1,9 @@
+{% extends "all.html" %}
+
+{% block heading %}
+<div style="display: inline-flex;" class="flex float-center text-xl pb-12">
+    <a href="/home/all" class="font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">All</a>
+    <a href="/home/pending" class="text-red-600 bg-red-200 font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">Pending</a>
+    <a href="/home/complete" class="font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">Completed</a>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+<link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
+
+<p class="text-4xl font-bold pt-6 pl-6 pb-12">Task Manager</p>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <div class="text-center font-bold text-xl">
+        {{task.user}}, are you sure you want to delete Task: {{task.title}}?
+        <br><br>
+        <input type="submit" value="Confirm" class="text-white bg-red-600 hover:bg-red-800 rounded-lg px-10 py-2">
+        <a href="/home/all"><input type="button" value="Cancel" class="text-white bg-red-600 hover:bg-red-800 rounded-lg px-10 py-2"></a>
+    </div>
+</form>

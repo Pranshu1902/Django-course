@@ -1,0 +1,55 @@
+<html>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
+    
+    <body class="text-center">
+        <h1 class="text-center text-3xl font-bold pb-12">Task Manager App</h1>
+
+        <style>
+            label{
+                font-weight: bold;
+                text-align: center;
+            }
+            input{
+                background-color:rgb(237, 239, 241);
+                font-weight: bold;
+                text-align: center;
+                border: 4px;
+                border-color: red;
+                box-shadow: 4px;
+                margin-bottom: 6px;
+                margin-top: 6px;
+                border-radius: 10px;
+            }
+            textarea{
+                background-color:rgb(237, 239, 241);
+                font-weight: bold;
+                text-align: center;
+                border: 4px;
+                border-color: red;
+                box-shadow: 4px;
+                margin-bottom: 6px;
+                margin-top: 6px;
+                border-radius: 20px;
+            }
+            button{
+                color: white;
+                background-color: red;
+                box-shadow: 4px;
+                width: 150px;
+                height: 50px;
+                border-radius: 20px;
+            }
+            button:hover{
+                background-color:darkred;
+            }
+        </style>
+        <form action="create-task" method="post">
+            {{form.as_p}}
+            {% csrf_token %}
+            <button type="submit">Add Task</button>
+        </form>
+
+
+    </body>
+</html>
+

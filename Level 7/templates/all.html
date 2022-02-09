@@ -1,0 +1,62 @@
+<html>
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css">
+    <body class="text-center relative">
+        <!--Common Heading-->
+        <p class="text-4xl font-bold pt-6 pl-6">Task Manager</p>
+        &nbsp;
+
+        <!--Welcome and logout option-->
+        <div style="display: inline-flex;" class="flex pt-6 pl-6 pb-6 text-xl text-center">
+            <p class="text-3xl pr-12">Hi {{tasks.0.user}}</p>
+            <a href="/user/logout"><p class="font-semibold text-xl text-red-600 px-10 py-2 hover:text-red-800">Log Out</p></a>
+        </div>
+
+        <!--Number of tasks-->
+        <p class="text-gray-500 pl-6 pb-12" id="completed">{{completed}} of {{total}} tasks completed</p>
+
+        {%block heading%}
+        <div style="display: inline-flex;" class="flex text-center text-xl pb-12 left-100 relative">
+            <a href="/home/all" class="text-red-600 bg-red-200 font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">All</a>
+            <a href="/home/pending" class="font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">Pending</a>
+            <a href="/home/complete" class="font-semibold hover:bg-red-400 rounded-3xl px-10 py-2">Completed</a>
+        </div>
+        {% endblock %}
+
+        <div class="text-center">
+
+            <!--Main Tasks-->
+            <div class="pl-96 pr-96 pb-12">
+
+                <!--Task list starts-->
+                {% for task in tasks %}
+                <a href="/detail-task/{{task.id}}">
+                <div class="flex items-center bg-gray-100 rounded-lg relative"> <!--min h screen-->
+                    <div class="flex items-center justify-between h-24">
+                        <div class="flex flex-col px-10 text-left">
+                            {% block cross_completed %}
+                            {% if task.completed %}
+                            <p id="task_title" class="text-red-500 line-through text-2xl font-semibold">{{task.title}}</p>
+                            {% else %}
+                            <p id="task_title" class="text-2xl font-semibold">{{task.title}}: {{task.priority}}</p>
+                            {% endif %}
+                            <span id="task_date" class="text-sm text-gray-400">{{task.pretty_date}}</span>
+                            {% endblock %}
+                        </div>
+                    </div>
+                    <div class="text-right flex absolute right-10">
+                        <a href="/update-task/{{task.id}}"><img src="https://media.discordapp.net/attachments/938807919296782400/938808507535343687/update.png" alt="update" width="50" height="50"></a>&nbsp;
+                        <a href="/delete-task/{{task.id}}"><img src="https://media.discordapp.net/attachments/938807919296782400/938808015350558770/delete.png" alt="delete" width="50" height="50"></a>
+                    </div>
+                </div>
+                </a>
+                &nbsp;
+                {% endfor %}
+            </div>
+
+            <a href="/create-task"><button class="text-white bg-red-600 rounded-lg px-10 py-2 hover:bg-red-800">Create New Task</button></a>
+
+        </div>
+        &nbsp;
+
+    </body>
+</html>
