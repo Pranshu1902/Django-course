@@ -10,6 +10,11 @@ STATUS_CHOICES = (
 )
 
 
+# adding signals
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
+
 class Task(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
@@ -37,3 +42,16 @@ class History(models.Model):
 
     def __str__(self):
         return self.created_date.strftme("%a %d %b")
+
+@receiver(pre_save, sender=Task)
+def addHistory(sender, instance, **kwargs):
+    previous = Task.objects.get(pk=instance.id)
+    if previous.status != instance.status:
+        History.objects.create(
+            task=instance, prev=previous.status, new=sender.status
+        ).save()
+        print("History record added")
+    else:
+        print("History record not created")
+
+    
