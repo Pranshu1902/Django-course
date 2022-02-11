@@ -18,6 +18,7 @@ from django.urls import path
 
 
 from tasks.views import *
+from tasks.apiviews import *
 
 from django.contrib.auth.views import LogoutView
 
