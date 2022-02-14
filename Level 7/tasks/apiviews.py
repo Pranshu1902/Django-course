@@ -12,6 +12,9 @@ from rest_framework.viewsets import ModelViewSet
 
 from rest_framework.permissions import IsAuthenticated
 
+from rest_framework import mixins
+from rest_framework.viewsets import GenericViewSet
+
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -42,6 +45,9 @@ class TaskViewSet(ModelViewSet):
 
 
 class TaskListAPI(APIView):
+
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         tasks = Task.objects.filter(deleted=False)
         data = TaskSerializer(tasks, many=True).data
@@ -90,29 +96,6 @@ class TaskFilter(FilterSet):
     completed = BooleanFilter()
 
 
-class TaskViewSet(ModelViewSet):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer
-
-    permission_classes = (IsAuthenticated,)
-
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = TaskFilter
-
-    # for tracking status changes
-    def perform_update(self, serializer):
-        id = self.get_object().id
-        status = self.get_object().status
-        new_status = serializer.validated_data.get("status")
-
-        if new_status != status:
-            task = Task.objects.filter(id=id).get()
-            History.objects.create(task=task, prev=status, new=new_status)
-            serializer.save(status=new_status)
-        else:
-            serializer.save()
-
-
 # Task Status History Section
 
 
@@ -127,10 +110,6 @@ class HistoryFilter(FilterSet):
     time = DateFromToRangeFilter()
     prev = ChoiceFilter(choices=STATUS_CHOICES)
     new = ChoiceFilter(choices=STATUS_CHOICES)
-
-
-from rest_framework import mixins
-from rest_framework.viewsets import GenericViewSet
 
 
 class TaskHistoryApiViewset(
@@ -171,3 +150,16 @@ class TaskHistoryViewSet(ModelViewSet):
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TaskHistoryFilter
+
+    # for tracking status changes
+    def perform_update(self, serializer):
+        id = self.get_object().id
+        status = self.get_object().status
+        new_status = serializer.validated_data.get("status")
+
+        if new_status != status:
+            task = Task.objects.filter(id=id).get()
+            History.objects.create(task=task, prev=status, new=new_status)
+            serializer.save(status=new_status)
+        else:
+            serializer.save()
