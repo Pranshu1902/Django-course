@@ -35,7 +35,7 @@ class TaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Task.objects.filter(user=self.request.user, deleted=False)
@@ -46,7 +46,7 @@ class TaskViewSet(ModelViewSet):
 
 class TaskListAPI(APIView):
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         tasks = Task.objects.filter(deleted=False)
@@ -71,7 +71,7 @@ class CompletedTaskViewSet(ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Task.objects.filter(
@@ -113,7 +113,6 @@ class HistoryFilter(FilterSet):
 
 
 class TaskHistoryApiViewset(
-    mixins.DestroyModelMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet,
@@ -142,24 +141,13 @@ class TaskHistorySerializer(ModelSerializer):
         fields = "__all__"
 
 
-class TaskHistoryViewSet(ModelViewSet):
+class TaskHistoryViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
+):
     queryset = History.objects.all()
     serializer_class = TaskHistorySerializer
 
-    permission_classes = (IsAuthenticated,)
+    permission_classes = [IsAuthenticated]
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TaskHistoryFilter
-
-    # for tracking status changes
-    def perform_update(self, serializer):
-        id = self.get_object().id
-        status = self.get_object().status
-        new_status = serializer.validated_data.get("status")
-
-        if new_status != status:
-            task = Task.objects.filter(id=id).get()
-            History.objects.create(task=task, prev=status, new=new_status)
-            serializer.save(status=new_status)
-        else:
-            serializer.save()
