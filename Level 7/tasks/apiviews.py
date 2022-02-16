@@ -14,6 +14,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework import mixins
 from rest_framework.viewsets import GenericViewSet
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 class UserSerializer(ModelSerializer):
@@ -31,7 +33,7 @@ class TaskSerializer(ModelSerializer):
         fields = ["title", "description", "completed", "user", "status", "id"]
 
 
-class TaskViewSet(ModelViewSet):
+class TaskViewSet(LoginRequiredMixin, ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
@@ -112,7 +114,7 @@ class HistoryFilter(FilterSet):
     new = ChoiceFilter(choices=STATUS_CHOICES)
 
 
-class TaskHistoryApiViewset(
+class TaskHistoryApiViewset(LoginRequiredMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet,
@@ -142,7 +144,7 @@ class TaskHistorySerializer(ModelSerializer):
 
 
 class TaskHistoryViewSet(
-    mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
+    LoginRequiredMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
 ):
     queryset = History.objects.all()
     serializer_class = TaskHistorySerializer
