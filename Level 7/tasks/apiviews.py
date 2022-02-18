@@ -17,7 +17,6 @@ from rest_framework.viewsets import GenericViewSet
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
@@ -114,7 +113,8 @@ class HistoryFilter(FilterSet):
     new = ChoiceFilter(choices=STATUS_CHOICES)
 
 
-class TaskHistoryApiViewset(LoginRequiredMixin,
+class TaskHistoryApiViewset(
+    LoginRequiredMixin,
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
     GenericViewSet,
@@ -126,7 +126,7 @@ class TaskHistoryApiViewset(LoginRequiredMixin,
     filterset_class = HistoryFilter
 
     def get_queryset(self):
-        return History.objects.all()
+        return History.objects.filter(task__user=self.request.user)
 
 
 # class to view history of status
@@ -146,10 +146,12 @@ class TaskHistorySerializer(ModelSerializer):
 class TaskHistoryViewSet(
     LoginRequiredMixin, mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet
 ):
-    queryset = History.objects.all()
     serializer_class = TaskHistorySerializer
 
     permission_classes = [IsAuthenticated]
 
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TaskHistoryFilter
+
+    def get_queryset(self):
+        return History.objects.filter(task__user=self.request.user)
