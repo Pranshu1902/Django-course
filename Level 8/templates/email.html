@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block heading %}
+{% endblock %}
+
+{% block tasks %}
+
+<h1 style="padding-left: 40%;" class="font-bold text-black">Email Notification</h1>
+
+<div style="padding-left: 40%;">
+    <form action="/notify" method="post">
+        <p>Email Id: </p><input type="email"><br>&nbsp;
+        <p>Time: </p><input type="time"><br><br>
+        <input type="Submit" value="Notify Me">
+    </form>
+</div>
+
+{% endblock %}

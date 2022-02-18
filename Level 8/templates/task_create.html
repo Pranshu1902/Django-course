@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block heading %}
+{% endblock %}
+
+{% block tasks %}
+        <form action="create-task" method="post">
+            {{form.as_p}}
+            {% csrf_token %}
+            <button type="submit">Add Task</button>
+        </form>
+
+{% endblock %}

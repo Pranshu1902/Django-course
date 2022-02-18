@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block heading %}
+{% endblock %}
+
+{% block tasks %}
+        <form action="" method="post">
+            {{form.as_p}}
+            {% csrf_token %}
+            <button type="submit">Update Task</button>
+            <a href="/home/all"><button type="button">Cancel</button></a>
+        </form>
+
+{% endblock %}

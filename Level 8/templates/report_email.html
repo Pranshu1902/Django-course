@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block header %}
+{% endblock %}
+
+{% block heading %}
+{% endblock %}
+
+{% block tasks %}
+    <h1 class="font-bold text-2xl pt-6 pb-12">Email Notifier</h1>
+
+        <form action="" method="post" class="pt-12">
+            {{form.as_p}}
+            &nbsp;
+            {% csrf_token %}
+            <button class="mt-6" type="submit">Submit</button>
+            <!-- <a href="/home/all"><button type="button">Submit</button></a> -->
+        </form>
+
+{% endblock %}
