@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from celery.decorators import periodic_task
 
 
-@periodic_task(run_every=timedelta(seconds=10))
+@periodic_task(run_every=timedelta(minutes=1))
 def send_email_reminder():
     print("Processing emails")
 
