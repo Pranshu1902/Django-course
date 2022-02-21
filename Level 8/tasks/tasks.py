@@ -30,6 +30,6 @@ def send_email_reminder():
         )
 
         # updating the last_emailed field
-        report.last_emailed = datetime.now(timezone.utc)
+        report.last_emailed += timedelta(days=1)
         report.save()
         print(f"Completed Processing User {report.user.id}")
