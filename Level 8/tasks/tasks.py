@@ -30,7 +30,7 @@ def send_email_reminder():
         )
 
         # updating the last_emailed field
-        report.last_emailed += datetime.now(timezone.utc).replace(
+        report.last_emailed = datetime.now(timezone.utc).replace(
             hour=report.time.hour, minute=report.time.minute, second=report.time.second
         )
         report.save()
