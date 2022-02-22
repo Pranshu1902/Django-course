@@ -17,7 +17,7 @@ def send_email_reminder():
         pending_tasks = Task.objects.filter(
             user=report.user, completed=False, deleted=False
         )
-        email_content = f"You have {pending_tasks.count()} Pening Tasks\n\n"
+        email_content = f"You have {pending_tasks.count()} Pending Tasks\n\n"
         i = 1
         for task in pending_tasks:
             email_content += f"" + str(i) + ". {task.title} \n"

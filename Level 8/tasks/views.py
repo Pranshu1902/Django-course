@@ -4,6 +4,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import datetime, timezone, timedelta
 
 # from django.contrib.auth.models import User
 
@@ -207,7 +208,27 @@ class EmailTaskView(AuthorisedTaskManager, CreateView):
     success_url = "/home/all"
 
     def form_valid(self, form):
-        form.save()
         self.object = form.save()
+
+        # putting the value of last_emailed in the Report model
+        time = (
+            datetime.now(timezone.utc)
+            .replace(
+                hour=self.object.time.hour, minute=self.object.time.minute, second=0
+            )
+            .time()
+        )
+
+        if time >= datetime.now().time:
+            a = timedelta(days=1)  # today's mail is left
+        else:
+            a = timedelta(days=0)  # tomorrow's mail is left
+        self.object.last_emailed = (
+            datetime.now(timezone.utc).replace(
+                hour=self.object.time.hour, minute=self.object.time.minute, second=0
+            )
+            - a
+        )
+
         self.object.save()
         return HttpResponseRedirect("/home/all")
