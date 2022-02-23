@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block cross_completed %}
+{% if task.completed %}
+<p id="task_title" class="text-red-500 line-through text-2xl font-semibold">{{task.title}}</p>
+{% else %}
+<p id="task_title" class="text-2xl font-semibold">{{task.title}}</p>
+{% endif %}
+<span id="task_date" class="text-sm text-gray-400">{{task.pretty_date}}</span>
+{% endblock %}
